@@ -7,11 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestComponent;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -20,10 +18,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /*
@@ -170,5 +166,11 @@ class GatewayApplicationTests {
         DummyProductInformation dummyProductInformation = objectMapper.readValue(secRequest, DummyProductInformation.class);
         assertThat(dummyProductInformation != null);
         assertThat(productInformations.get(getElementId).getUuid().compareTo(dummyProductInformation.getUuid()) == 0);
+    }
+
+    @Test
+    void calu_VAT() {
+        String firstRquest = restTemplate.getForObject(GATEWAY_URL + URL_PRODUCT_INFORMATION + "?price=23&percent=43", String.class);
+        assertThat(firstRquest.compareTo("32.89") == 0);
     }
 }
