@@ -1,28 +1,38 @@
 package com.butbetter.gateway;
 
-import com.butbetter.gateway.dummys.AlcoholBeverageType;
-import com.butbetter.gateway.dummys.AlcoholRatingType;
-import com.butbetter.gateway.dummys.DummyAlcohol;
+import com.butbetter.gateway.dummys.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestComponent;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+/*
+Source of testing szenario http://localhost:9095/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/
+ */
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class GatewayApplicationTests {
 
+    private static final String GATEWAY_URL = "http://localhost:9095/";
     private static final String ALCOHOL_URL = "/v1/application/alcohol/";
     private static final String URL_PRODUCT_INFORMATION = "/v1/application/productinformation/";
     private static final String URL_VAT = "/v1/application/VAT/";
@@ -35,7 +45,7 @@ class GatewayApplicationTests {
 
     @BeforeEach
     void setUp() {
-        restTemplate.delete(RouterManager.URL_APPLICATION + ALCOHOL_URL);
+        restTemplate.delete(GATEWAY_URL + ALCOHOL_URL);
     }
 
     @Test
@@ -44,7 +54,7 @@ class GatewayApplicationTests {
 
     @Test
     void deleteAll_alcohol() {
-        assertThat(restTemplate.getForObject(RouterManager.URL_APPLICATION + ALCOHOL_URL, String.class).isEmpty());
+        assertThat(restTemplate.getForObject(GATEWAY_URL + ALCOHOL_URL, String.class).isEmpty());
     }
 
     @Test
@@ -56,8 +66,11 @@ class GatewayApplicationTests {
                 5, 0.5, AlcoholRatingType.four, 16, false, false, "Deutschland");
         HttpEntity<DummyAlcohol> requestEntity = new HttpEntity<>(alcohol, headers);
 
-        restTemplate.postForEntity(RouterManager.URL_APPLICATION + ALCOHOL_URL, requestEntity, String.class);
-        String result = restTemplate.getForObject(RouterManager.URL_APPLICATION + ALCOHOL_URL, String.class);
+        var resultOfPost = restTemplate.postForEntity(GATEWAY_URL + ALCOHOL_URL, requestEntity, String.class);
+
+        assertThat(resultOfPost.getStatusCode().value() == 200);
+
+        String result = restTemplate.getForObject(GATEWAY_URL + ALCOHOL_URL, String.class);
 
         List<DummyAlcohol> dummyAlcohol = objectMapper.readValue(result, new TypeReference<>() {
         });
@@ -76,11 +89,86 @@ class GatewayApplicationTests {
                 AlcoholRatingType.four, 21, false, true, "Belarus");
         HttpEntity<DummyAlcohol> requestEntity = new HttpEntity<>(alcohol, headers);
 
-        restTemplate.postForEntity(RouterManager.URL_APPLICATION + ALCOHOL_URL, requestEntity, String.class);
-        String result = restTemplate.getForObject(RouterManager.URL_APPLICATION + ALCOHOL_URL, String.class);
+        restTemplate.postForEntity(GATEWAY_URL + ALCOHOL_URL, requestEntity, String.class);
+        String result = restTemplate.getForObject(GATEWAY_URL + ALCOHOL_URL, String.class);
 
-        List<DummyAlcohol> dummyAlcohol = objectMapper.readValue(result, new TypeReference<>() {});
+        List<DummyAlcohol> dummyAlcohol = objectMapper.readValue(result, new TypeReference<>() {
+        });
+
+        assertThat(dummyAlcohol.get(0).getAgeOfRestrictions() == alcohol.getAgeOfRestrictions()
+                && dummyAlcohol.get(0).isBio() == alcohol.isBio() && dummyAlcohol.get(0).getAmount() == alcohol.getAmount());
+
+        UUID uuid = dummyAlcohol.get(0).getUuid();
+
+        assertThat(dummyAlcohol.size() == 1); //length check == 1
+        restTemplate.delete(GATEWAY_URL + ALCOHOL_URL, uuid);
+
+        String resultAfterDelete = restTemplate.getForObject(GATEWAY_URL + ALCOHOL_URL, String.class);
+
+        List<DummyAlcohol> dummyAlcoholAfterDelete = objectMapper.readValue(result, new TypeReference<>() {
+        });
+
+        assertThat(dummyAlcoholAfterDelete.size() == 0); // length check == 0 is deleted
+    }
+
+    @Test
+    void get_and_post_deliveryInformation() throws JsonProcessingException {
+
+        var objectMapper = new ObjectMapper();
+        String firstRquest = restTemplate.getForObject(GATEWAY_URL + URL_PRODUCT_INFORMATION, String.class);
+        List<DummyProductInformation> productInformations = objectMapper.readValue(firstRquest, new TypeReference<>() {
+        });
+
+        int firstResultOfSize = productInformations.size();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        int hour = 3;
+        int minute = 30;
+        var offsetDateTime = OffsetDateTime.ofInstant(Instant.now(), ZoneId.systemDefault())
+                .toInstant()
+                .atOffset(ZoneOffset.ofHoursMinutes(hour, minute));
+
+        var DummyProductInformation = new DummyProductInformation(
+                offsetDateTime.toString(),
+                20,
+                new DummyAddress(
+                        "name",
+                        "companyName",
+                        "street",
+                        "city",
+                        "postCode",
+                        "country"
+                )
+        );
+
+        var requestEntity = new HttpEntity<>(DummyProductInformation, headers);
+
+        var resultOfPost = restTemplate.postForEntity(GATEWAY_URL + URL_PRODUCT_INFORMATION, requestEntity, String.class);
+
+        assertThat(resultOfPost.getStatusCode().value() == 200);
 
 
+        String result = restTemplate.getForObject(GATEWAY_URL + URL_PRODUCT_INFORMATION, String.class);
+        List<DummyProductInformation> dummyProductInformation = objectMapper.readValue(result, new TypeReference<>() {
+        });
+        assertThat(!result.isEmpty()); // by default size 0##
+        assertThat(firstResultOfSize + 1 == dummyProductInformation.size()); // list.size() + 1 da post request
+    }
+
+    @Test
+    void get_deliveryInformation_byId() throws JsonProcessingException {
+        var objectMapper = new ObjectMapper();
+        String firstRquest = restTemplate.getForObject(GATEWAY_URL + URL_PRODUCT_INFORMATION, String.class);
+        List<DummyProductInformation> productInformations = objectMapper.readValue(firstRquest, new TypeReference<>() {
+        });
+
+        int getElementId = (int) (Math.random() * productInformations.size() - 1);
+
+        String secRequest = restTemplate.getForObject(GATEWAY_URL + URL_PRODUCT_INFORMATION + productInformations.get(getElementId).getUuid(), String.class);
+        DummyProductInformation dummyProductInformation = objectMapper.readValue(secRequest, DummyProductInformation.class);
+        assertThat(dummyProductInformation != null);
+        assertThat(productInformations.get(getElementId).getUuid().compareTo(dummyProductInformation.getUuid()) == 0);
     }
 }
