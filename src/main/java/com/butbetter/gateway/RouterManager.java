@@ -8,13 +8,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RouterManager {
 
-    public static final String URL_APPLICATION = "http://localhost:9090/";
-    public static final String URL_CALU = "http://localhost:8080/";
+    private static final String URL_APPLICATION = "http://localhost:9090/";
+    private static final String URL_CALU = "http://localhost:8080/";
 
     private static final String URL_ALCOHOL = "/v1/application/alcohol/**";
     private static final String URL_OVER_APPLICATION_VAT = "/v1/application/VAT/**";
     private static final String URL_PRODUCT_INFORMATION = "/v1/application/productinformation/**";
     private static final String URL_VAT = "calc/v1/VAT/**";
+    private static final String URL_TRANSLATION = "/v1/application/translator/**";
 
     @Bean
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
@@ -31,6 +32,10 @@ public class RouterManager {
                 .route(p -> p
                         .path(URL_VAT)
                         .uri(URL_CALU))
+                .route(p -> p
+                        .path(URL_TRANSLATION)
+                        .uri(URL_APPLICATION)
+                )
                 .build();
     }
 }
