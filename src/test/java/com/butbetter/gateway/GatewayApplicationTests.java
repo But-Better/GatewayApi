@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
@@ -32,6 +33,7 @@ class GatewayApplicationTests {
     private static final String ALCOHOL_URL = "/v1/application/alcohol/";
     private static final String URL_PRODUCT_INFORMATION = "/v1/application/productinformation/";
     private static final String URL_VAT = "/v1/application/VAT/";
+    private static final String URL_TRANSLATION = "/v1/application/translator";
 
     private final RestTemplate restTemplate;
 
@@ -172,5 +174,19 @@ class GatewayApplicationTests {
     void calu_VAT() {
         String firstRquest = restTemplate.getForObject(GATEWAY_URL + URL_PRODUCT_INFORMATION + "?price=23&percent=43", String.class);
         assertThat(firstRquest.compareTo("32.89") == 0);
+    }
+
+    @Disabled("Need DEEPL API KEY")
+    @Test
+    void get_translate() {
+        String firstRquest = restTemplate.getForObject(GATEWAY_URL + URL_TRANSLATION + "?text=hallo&language=DE", String.class);
+        assertThat(firstRquest.compareTo("hello") == 0);
+    }
+
+    @Disabled("Need DEEPL API KEY")
+    @Test
+    void get_Translation() {
+        String firstRquest = restTemplate.getForObject(GATEWAY_URL + URL_TRANSLATION +  "/analyse" + "?text=Freund", String.class);
+        assertThat(firstRquest.compareTo("DE") == 0);
     }
 }
