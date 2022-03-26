@@ -112,7 +112,7 @@ class GatewayApplicationTests {
     @Test
     void get_and_post_deliveryInformation() throws JsonProcessingException {
 
-        var objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         String firstRquest = restTemplate.getForObject(GATEWAY_URL + URL_PRODUCT_INFORMATION, String.class);
         List<DummyProductInformation> productInformations = objectMapper.readValue(firstRquest, new TypeReference<>() {
         });

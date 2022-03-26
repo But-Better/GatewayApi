@@ -1,0 +1,36 @@
+2022-03-26 11:03:24.455  INFO 54928 --- [main] c.b.gateway.GatewayApplicationTests      : Starting GatewayApplicationTests using Java 17.0.3 on note-laptop with PID 54928 (started by note in /home/note/IdeaProjects/GatewayApi)
+2022-03-26 11:03:24.470  INFO 54928 --- [main] c.b.gateway.GatewayApplicationTests      : No active profile set, falling back to default profiles: default
+2022-03-26 11:03:27.101  INFO 54928 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=e68ebf97-decc-37a1-b6c5-e37f9a52e0c6
+2022-03-26 11:03:30.974  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2022-03-26 11:03:30.975  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2022-03-26 11:03:30.976  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2022-03-26 11:03:30.977  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2022-03-26 11:03:30.977  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2022-03-26 11:03:30.978  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2022-03-26 11:03:30.978  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2022-03-26 11:03:30.979  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2022-03-26 11:03:30.979  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2022-03-26 11:03:30.979  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2022-03-26 11:03:30.980  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2022-03-26 11:03:30.980  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2022-03-26 11:03:30.981  INFO 54928 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2022-03-26 11:03:32.693  INFO 54928 --- [main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 9095
+2022-03-26 11:03:32.894  INFO 54928 --- [main] c.b.gateway.GatewayApplicationTests      : Started GatewayApplicationTests in 10.975 seconds (JVM running for 19.086)
+2022-03-26 11:06:05.072  INFO 55204 --- [main] c.b.gateway.GatewayApplicationTests      : Starting GatewayApplicationTests using Java 17.0.3 on note-laptop with PID 55204 (started by note in /home/note/IdeaProjects/GatewayApi)
+2022-03-26 11:06:05.077  INFO 55204 --- [main] c.b.gateway.GatewayApplicationTests      : No active profile set, falling back to default profiles: default
+2022-03-26 11:06:07.815  INFO 55204 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=e68ebf97-decc-37a1-b6c5-e37f9a52e0c6
+2022-03-26 11:06:11.366  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2022-03-26 11:06:11.367  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2022-03-26 11:06:11.367  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2022-03-26 11:06:11.368  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2022-03-26 11:06:11.369  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2022-03-26 11:06:11.369  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2022-03-26 11:06:11.370  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2022-03-26 11:06:11.371  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2022-03-26 11:06:11.372  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2022-03-26 11:06:11.372  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2022-03-26 11:06:11.372  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2022-03-26 11:06:11.373  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2022-03-26 11:06:11.373  INFO 55204 --- [main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2022-03-26 11:06:12.891  INFO 55204 --- [main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 9095
+2022-03-26 11:06:13.009  INFO 55204 --- [main] c.b.gateway.GatewayApplicationTests      : Started GatewayApplicationTests in 9.287 seconds (JVM running for 15.254)
